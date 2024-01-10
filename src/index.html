@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loading</title>
+    <link rel="stylesheet" href="loader.css" />
+  </head>
+  <style></style>
+  <body>
+    <div class="loader">
+      <svg viewBox="0 0 80 80">
+        <circle id="test" cx="40" cy="40" r="32"></circle>
+      </svg>
+    </div>
+    <div class="loader triangle">
+      <svg viewBox="0 0 86 80">
+        <polygon points="43 8 79 72 7 72"></polygon>
+      </svg>
+    </div>
+    <div class="loader">
+      <svg viewBox="0 0 80 80">
+        <rect x="8" y="8" width="64" height="64"></rect>
+      </svg>
+    </div>
+    <!-- dribbble -->
+    <a
+      class="dribbble"
+      href="https://dribbble.com/shots/5878367-Loaders"
+      target="_blank"
+      ><img
+        src="https://cdn.dribbble.com/assets/dribbble-ball-mark-2bd45f09c2fb58dbbfb44766d5d1d07c5a12972d602ef8b32204d28fa3dda554.svg"
+        alt=""
+    /></a>
+    <!-- Script Transition -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          window.location.href = "main.html";
+        }, 4000); // Adjust the total time according to your needs
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 
+Special thanks to Aaron Iker (@aaroniker) for the amazing loading animation code!
+Original code source: https://codepen.io/aaroniker/pen/omvYNZ
+
+I, [HooQii], am grateful for the contribution of this code to enhance the loading animation on my web profile. 
+I have incorporated this code into my project with the permission of the original author, Aaron Iker.
+As a senior code writer, I appreciate the creativity and expertise demonstrated in this code, and it significantly enhances the user experience on my web profile.
+Thank you, Aaron Iker, for your outstanding work!
+
+HooQii]
+-->

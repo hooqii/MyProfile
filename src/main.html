@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet" />
+    <title>HooQii</title>
+  </head>
+  <style>
+    .cursor {
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background-color: #fff;
+      border: 2px solid #444d5e;
+      transition: 0.75s;
+      mix-blend-mode: difference;
+    }
+    #avatar:hover ~ .cursor {
+      transform: scale(1.5);
+    }
+  </style>
+  <body>
+    <div class="relative">
+      <div class="flex z-10 flex-col ml-20 flex-wrap w-2/4 mt-32 relative">
+        <h1
+          class="font-poppins cursor-pointer font-semibold text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-slate-700"
+        >
+          HooQii
+        </h1>
+        <h2
+          class="cursor-default font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-5"
+        >
+          Full-Stack Software Enginer
+        </h2>
+        <h3
+          class="cursor-default text-sm sm:text-base mt-5 font-poppins sm:mt-3 md:mt-5 lg:text-2xl lg:mt-7 font-light"
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
+        </h3>
+        <div
+          class="z-20 flex flex-wrap items-center mt-6 sm:mt-8 md:mt-8 lg:mt-10 gap-4 lg:gap-6 w-full mb-16 sm:mb-28 lg:mb-44"
+        >
+          <div
+            id="connect"
+            class="px-4 py-3 gap-4 text-xs sm:text-sm sm:px-5 sm:gap-2 sm:py-3 lg:px-6 lg:py-4 lg:gap-6 lg:text-xl cursor-pointer rounded-full flex items-center justify-between bg-slate-700 text-white font-poppins transition-transform duration-500 transform hover:scale-110 shadow-2xl"
+          >
+            Let's Connect
+            <img
+              class="w-5 sm:w-6 lg:w-8"
+              src="assets/arrow-right.png"
+              alt=""
+              srcset=""
+            />
+          </div>
+          :
+          <div
+            class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
+          >
+            <img
+              class="w-4 lg:w-6"
+              src="assets/icon _mail_.png"
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div
+            class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
+          >
+            <img
+              class="w-4 lg:w-6"
+              src="assets/icon _github_.png"
+              alt=""
+              srcset=""
+            />
+          </div>
+          <div
+            class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
+          >
+            <img
+              class="w-4 lg:w-6"
+              src="assets/icon _Instagram_.png"
+              alt=""
+              srcset=""
+            />
+          </div>
+        </div>
+      </div>
+      <img
+        id="avatar"
+        class="z-0 bottom-0 transform translate-x-50 -translate-y-50 absolute w-3/6 right-0"
+        src="assets/avatar.png"
+        alt=""
+        srcset=""
+      />
+    </div>
+    <div
+      class="z-10 mt-12 mr-14 font-poppins text-xl font-light text-end right-0 top-0 transform translate-x-50 -translate-y-50 absolute"
+    >
+      <div id="local-time"></div>
+      <div class="gap-3 items-end mt-5 absolute right-0 flex flex-col">
+        <img
+          class="w-1/6 transition-transform duration-500 transform hover:scale-125"
+          src="assets/arrow-down.png"
+          alt=""
+        />
+        <img
+          class="w-1/6 transition-transform duration-500 transform hover:scale-125"
+          src="assets/arrow-down.png"
+          alt=""
+        />
+        <img
+          class="w-1/6 transition-transform duration-500 transform hover:scale-125"
+          src="assets/arrow-down.png"
+          alt=""
+        />
+      </div>
+    </div>
+    <div class="flex bg-slate-900 h-96"></div>
+    <div class="cursor z-50"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
