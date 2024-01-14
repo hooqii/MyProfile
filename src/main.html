@@ -20,6 +20,21 @@
     #avatar:hover ~ .cursor {
       transform: scale(1.5);
     }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    #connect,
+    #avatar {
+      animation: fadeInUp 1.25s ease-out 1 normal forwards;
+      z-index: -1;
+    }
   </style>
   <body>
     <div class="relative">
@@ -30,12 +45,12 @@
           HooQii
         </h1>
         <h2
-          class="cursor-default font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-5"
+          class="cursor-default font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-2 sm:mt-4 md:mt-5 lg:mt-5"
         >
-          Full-Stack Software Enginer
+          <span id="typing-text"></span>
         </h2>
         <h3
-          class="cursor-default text-sm sm:text-base mt-5 font-poppins sm:mt-3 md:mt-5 lg:text-2xl lg:mt-7 font-light"
+          class="cursor-default text-sm sm:text-base mt-2 font-poppins sm:mt-3 md:mt-5 lg:text-2xl lg:mt-7 font-light"
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -59,8 +74,8 @@
               srcset=""
             />
           </div>
-          :
           <div
+            id="connect"
             class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
           >
             <a href="https://www.linkedin.com/in/defri-salwan/">
@@ -73,6 +88,7 @@
             </a>
           </div>
           <div
+            id="connect"
             class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
           >
             <a href="mailto:hooqii.me@gmail.com">
@@ -85,6 +101,7 @@
             </a>
           </div>
           <div
+            id="connect"
             class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
           >
             <a href="https://www.instagram.com/hoo_qii/">
@@ -97,6 +114,7 @@
             </a>
           </div>
           <div
+            id="connect"
             class="flex cursor-pointer transition-transform duration-200 hover:scale-125 items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-slate-200 rounded-full"
           >
             <a href="https://github.com/hooqii">
@@ -140,7 +158,7 @@
         />
       </div>
     </div>
-    <div class="flex bg-slate-900 h-96"></div>
+    <div id="section-2" class="z-40 flex bg-slate-900 h-96"></div>
     <div class="cursor z-50"></div>
     <script src="script.js"></script>
   </body>

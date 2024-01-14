@@ -5,29 +5,48 @@ document.addEventListener("mousemove", (e) => {
 });
 
 function updateLocalTime() {
-  const localTimeElement = document.getElementById('local-time');
+  const localTimeElement = document.getElementById("local-time");
 
-  // Mendapatkan waktu lokal
+  // Get local time
   const now = new Date();
-  
-  // Mengambil jam, menit, detik
-  const hours = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-  const seconds = now.getSeconds().toString().padStart(2, '0');
 
-  // Mengambil nama hari
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  // Get hours, minutes, seconds
+  const hours = now.getHours().toString().padStart(2, "0");
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const seconds = now.getSeconds().toString().padStart(2, "0");
+
+  // Get day name
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   const day = days[now.getDay()].toUpperCase();
-
-  // Format waktu
+  //Times format
   const formattedTime = `${hours}.${minutes}.${seconds} ${day}`;
-
-  // Memasukkan waktu ke dalam elemen HTML
+  // Insert time into HTML element
   localTimeElement.innerHTML = `LOCAL TIME UTC+07.00<br />${formattedTime}`;
 }
-
-// Memanggil fungsi updateLocalTime setiap detik
+// Calling the updateLocalTime function every second
 setInterval(updateLocalTime, 1000);
+// Calling the updateLocalTime function when the page is first loaded
+document.addEventListener("DOMContentLoaded", updateLocalTime);
 
-// Memanggil fungsi updateLocalTime saat halaman pertama kali dimuat
-document.addEventListener('DOMContentLoaded', updateLocalTime);
+const typingText = "Full-Stack Developer";
+let charIndex = 0;
+
+function type() {
+  const span = document.getElementById("typing-text");
+  if (charIndex < typingText.length) {
+    span.innerHTML += typingText.charAt(charIndex);
+    charIndex++;
+    setTimeout(type, 35); // Adjust typing speed here (in milliseconds)
+  }
+}
+
+// Trigger typing effect when the page loads
+window.onload = type;
