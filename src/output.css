@@ -1638,3 +1638,9 @@ video {
     line-height: 1.75rem;
   }
 }
+
+@media (min-width: 1280px){
+  .xl\:w-2\/6{
+    width: 33.333333%;
+  }
+}
