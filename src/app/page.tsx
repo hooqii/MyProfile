@@ -1,103 +1,214 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react"; // <-- Tambahkan import ini
+import CircularText from "./component/CircularText/CircularText";
+import localFont from "next/font/local";
+import DecryptedText from "./component/DecryptedText/DecryptedText";
+import TargetCursor from "./component/TargetCursor/TargetCursor";
+import Squares from "./component/Squares/Squares";
+import CurvedLoop from "./component/CurvedLoop/CurvedLoop";
+import ScrollVelocity from "./component/ScrollVelocity/ScrollVelocity";
+import Hyperspeed from "./component/Hyperspeed/Hyperspeed";
+import LoadingScreen from "./component/LoadingScreen/loadingscreen";
+
+const creatoDisplay = localFont({
+  src: "../font/CreatoDisplay-Regular.otf",
+  display: "swap", // opsional, tapi baik untuk UX
+});
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [isLoading, setIsLoading] = useState(true);
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    if (!isLoading) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event("resize"));
+      }, 50); // delay sedikit biar DOM sudah siap
+    }
+  }, [isLoading]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  return (
+    <div className={`${creatoDisplay.className} text-black min-h-screen`}>
+      {/* Tampilkan LoadingScreen jika isLoading true */}
+      <LoadingScreen onComplete={handleLoadingComplete} isLoading={isLoading} />
+
+      <div
+        className={`transition-opacity duration-1000 ${
+          isLoading ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <TargetCursor spinDuration={2} hideDefaultCursor={true} />
+        {/* === SECTION 1 === */}
+        <section id="home" className="h-screen px-8 relative z-10 ">
+          <div className="absolute inset-0 -z-10">
+            <Squares
+              speed={0.5}
+              squareSize={40}
+              direction="diagonal"
+              borderColor="#DDDAD0"
+              hoverFillColor="#1C352D"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+          {/* Main Content */}
+          <div className="px-8 pt-8 z-1">
+            {/* Top Header */}
+            <header className="flex justify-between items-center w-full mb-16">
+              {/* Left - Branding */}
+              <a
+                href="/"
+                className="cursor-target text-sm sm:text-xl font-medium"
+              >
+                ©HooQii
+              </a>
+              {/* Right - Navigation */}
+              <nav className="flex gap-8 text-sm sm:text-xl font-medium">
+                <a
+                  href="#home"
+                  className="cursor-target hover:text-orange-600 transition-colors"
+                >
+                  Home
+                </a>
+                <a
+                  href="#about"
+                  className="cursor-target hover:text-orange-600 transition-colors"
+                >
+                  About Me
+                </a>
+                <a
+                  href="#work"
+                  className="cursor-target hover:text-orange-600 transition-colors"
+                >
+                  Work
+                </a>
+                <a
+                  href="#contact"
+                  className="cursor-target hover:text-orange-600 transition-colors"
+                >
+                  <DecryptedText
+                    text="Contact"
+                    animateOn="view"
+                    revealDirection="center"
+                  />
+                </a>
+              </nav>
+            </header>
+            {/* Hero / Introduction Section */}
+            <div className="mt-32 text-center max-w-3xl mx-auto">
+              <h1 className="text-3xl sm:text-5xl font-medium mb-4">
+                Hello, my name is{" "}
+                <DecryptedText
+                  className="font-extrabold text-orange-600"
+                  text="Defri Salwan"
+                  speed={75}
+                  maxIterations={40}
+                  animateOn="hover"
+                  revealDirection="center"
+                  parentClassName="cursor-pointer"
+                />
+                <br />
+                <span className="text-xl sm:text-3xl">
+                  a.k.a{" "}
+                  <DecryptedText
+                    className="cursor-target text-emerald-950 hover:text-orange-600 font-semibold"
+                    text="HooQii"
+                    speed={75}
+                    maxIterations={80}
+                    animateOn="view"
+                  />
+                </span>
+              </h1>
+              <p className="text-base sm:text-lg text-gray-700 mt-4 leading-relaxed">
+                I'm a creative software developer with a passion for crafting
+                interactive UI, digital experiences, and efficient components.
+                Welcome to my portfolio.
+              </p>
+              <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-base font-serif sm:text-lg text-gray-700 leading-relaxed">
+                [Scroll To Explore]
+              </p>
+            </div>
+          </div>
+        </section>
+        <ScrollVelocity
+          texts={[" ✦ TECH ✦ WEB3 ✦ DESIGN", "SCROLL DOWN"]}
+          className="custom-scroll-text text-2xla font-medium"
+        />
+        {/* === SECTION 2 === */}
+        <section
+          id="about"
+          className="h-screen flex items-center justify-center px-8 relative overflow-hidden"
+        >
+          <div className="absolute bg-black items-center justify-center inset-0 -z-10">
+            <Hyperspeed
+              effectOptions={{
+                onSpeedUp: () => {},
+                onSlowDown: () => {},
+                distortion: "turbulentDistortion",
+                length: 400,
+                roadWidth: 10,
+                islandWidth: 2,
+                lanesPerRoad: 4,
+                fov: 90,
+                fovSpeedUp: 150,
+                speedUp: 2,
+                carLightsFade: 0.4,
+                totalSideLightSticks: 20,
+                lightPairsPerRoadWay: 40,
+                shoulderLinesWidthPercentage: 0.05,
+                brokenLinesWidthPercentage: 0.1,
+                brokenLinesLengthPercentage: 0.5,
+                lightStickWidth: [0.12, 0.5],
+                lightStickHeight: [1.3, 1.7],
+                movingAwaySpeed: [60, 80],
+                movingCloserSpeed: [-120, -160],
+                carLightsLength: [400 * 0.03, 400 * 0.2],
+                carLightsRadius: [0.05, 0.14],
+                carWidthPercentage: [0.3, 0.5],
+                carShiftX: [-0.8, 0.8],
+                carFloorSeparation: [0, 5],
+                colors: {
+                  roadColor: 0x080808,
+                  islandColor: 0x0a0a0a,
+                  background: 0x000000,
+                  shoulderLines: 0xffffff,
+                  brokenLines: 0xffffff,
+                  leftCars: [0xff7a30, 0xff7a30, 0xff7a30],
+                  rightCars: [0x03b3c3, 0x0e5ea5, 0x324555],
+                  sticks: 0x03b3c3,
+                },
+              }}
+            />
+          </div>
+          <div className="text-center max-w-2xl">
+            <h2 className="text-4xl text-white font-bold mb-4">About Me</h2>
+            <p className="text-lg text-white leading-relaxed">
+              I'am a junior developer, has a keen eye for design, and capable of
+              producing engaging user experiences. Mobile Developer | UI/UX
+              Designer
+            </p>
+          </div>
+        </section>
+        <div className="bottom-0">
+          <CurvedLoop
+            marqueeText="Tech ✦ Web3 ✦ Design ✦"
+            speed={3}
+            curveAmount={0}
+            direction="right"
+            interactive={true}
+            className="custom-text-style text-black"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        {/* Circular Text - fixed position */}
+        <main className="fixed bottom-8 left-6 z-50">
+          <CircularText
+            text="DESIGNER✦SOFTWARE✦DEVELOPER✦"
+            onHover="speedUp"
+            spinDuration={20}
+            className="custom-class"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </main>
+      </div>
     </div>
   );
 }
