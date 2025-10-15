@@ -1,37 +1,83 @@
 "use client";
 
-import { useState, useEffect } from "react"; // <-- Tambahkan import ini
-import CircularText from "./component/CircularText/CircularText";
+import Image from "next/image";
+import Lenis from "lenis";
+import { useState, useEffect, useRef } from "react";
+import CircularText from "./components/CircularText/CircularText";
 import localFont from "next/font/local";
-import DecryptedText from "./component/DecryptedText/DecryptedText";
-import TargetCursor from "./component/TargetCursor/TargetCursor";
-import Squares from "./component/Squares/Squares";
-import CurvedLoop from "./component/CurvedLoop/CurvedLoop";
-import ScrollVelocity from "./component/ScrollVelocity/ScrollVelocity";
-import Hyperspeed from "./component/Hyperspeed/Hyperspeed";
-import LoadingScreen from "./component/LoadingScreen/loadingscreen";
+import DecryptedText from "./components/DecryptedText/DecryptedText";
+import TargetCursor from "./components/TargetCursor/TargetCursor";
+import CurvedLoop from "./components/CurvedLoop/CurvedLoop";
+import ScrollVelocity from "./components/ScrollVelocity/ScrollVelocity";
+import Hyperspeed from "./components/Hyperspeed/Hyperspeed";
+import LoadingScreen from "./components/LoadingScreen/loadingscreen";
+import GradualBlur from "./components/GradualBlur/GradualBlur";
+import { motion, AnimatePresence } from "framer-motion";
+import ShinyText from "./components/ShinyText/ShinyText";
 
 const creatoDisplay = localFont({
   src: "../font/CreatoDisplay-Regular.otf",
-  display: "swap", // opsional, tapi baik untuk UX
+  display: "swap",
 });
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const handleLoadingComplete = () => {
-    setIsLoading(false);
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const handleLoadingComplete = () => setIsLoading(false);
+
+  // Smooth scroll setup
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const isReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouch || isReducedMotion) return;
+
+    const lenis = new Lenis({
+      wrapper: el as HTMLElement,
+      content: el.firstElementChild as HTMLElement,
+      duration: 1.8,
+      smoothWheel: true,
+      touchMultiplier: 1.2,
+      wheelMultiplier: 1,
+      lerp: 0.1,
+    });
+
+    let rafId: number;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
+
+  // Resize fix after loading
   useEffect(() => {
     if (!isLoading) {
       setTimeout(() => {
-        window.dispatchEvent(new Event("resize"));
-      }, 50); // delay sedikit biar DOM sudah siap
+        globalThis.dispatchEvent(new Event("resize"));
+      }, 50);
     }
   }, [isLoading]);
 
+  // Optional: trigger resize when menu toggles
+  useEffect(() => {
+    globalThis.dispatchEvent(new Event("resize"));
+  }, [isMenuOpen]);
+
   return (
     <div className={`${creatoDisplay.className} text-black min-h-screen`}>
-      {/* Tampilkan LoadingScreen jika isLoading true */}
+      {/* Loading screen */}
       <LoadingScreen onComplete={handleLoadingComplete} isLoading={isLoading} />
 
       <div
@@ -40,106 +86,14 @@ export default function Home() {
         }`}
       >
         <TargetCursor spinDuration={2} hideDefaultCursor={true} />
-        {/* === SECTION 1 === */}
-        <section id="home" className="h-screen px-8 relative z-10 ">
-          <div className="absolute inset-0 -z-10">
-            <Squares
-              speed={0.5}
-              squareSize={40}
-              direction="diagonal"
-              borderColor="#DDDAD0"
-              hoverFillColor="#1C352D"
-            />
-          </div>
-          {/* Main Content */}
-          <div className="px-8 pt-8 z-1">
-            {/* Top Header */}
-            <header className="flex justify-between items-center w-full mb-16">
-              {/* Left - Branding */}
-              <a
-                href="/"
-                className="cursor-target text-sm sm:text-xl font-medium"
-              >
-                ©HooQii
-              </a>
-              {/* Right - Navigation */}
-              <nav className="flex gap-8 text-sm sm:text-xl font-medium">
-                <a
-                  href="#home"
-                  className="cursor-target hover:text-orange-600 transition-colors"
-                >
-                  Home
-                </a>
-                <a
-                  href="#about"
-                  className="cursor-target hover:text-orange-600 transition-colors"
-                >
-                  About Me
-                </a>
-                <a
-                  href="#work"
-                  className="cursor-target hover:text-orange-600 transition-colors"
-                >
-                  Work
-                </a>
-                <a
-                  href="#contact"
-                  className="cursor-target hover:text-orange-600 transition-colors"
-                >
-                  <DecryptedText
-                    text="Contact"
-                    animateOn="view"
-                    revealDirection="center"
-                  />
-                </a>
-              </nav>
-            </header>
-            {/* Hero / Introduction Section */}
-            <div className="mt-32 text-center max-w-3xl mx-auto">
-              <h1 className="text-3xl sm:text-5xl font-medium mb-4">
-                Hello, my name is{" "}
-                <DecryptedText
-                  className="font-extrabold text-orange-600"
-                  text="Defri Salwan"
-                  speed={75}
-                  maxIterations={40}
-                  animateOn="hover"
-                  revealDirection="center"
-                  parentClassName="cursor-pointer"
-                />
-                <br />
-                <span className="text-xl sm:text-3xl">
-                  a.k.a{" "}
-                  <DecryptedText
-                    className="cursor-target text-emerald-950 hover:text-orange-600 font-semibold"
-                    text="HooQii"
-                    speed={75}
-                    maxIterations={80}
-                    animateOn="view"
-                  />
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg text-gray-700 mt-4 leading-relaxed">
-                I'm a creative software developer with a passion for crafting
-                interactive UI, digital experiences, and efficient components.
-                Welcome to my portfolio.
-              </p>
-              <p className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-base font-serif sm:text-lg text-gray-700 leading-relaxed">
-                [Scroll To Explore]
-              </p>
-            </div>
-          </div>
-        </section>
-        <ScrollVelocity
-          texts={[" ✦ TECH ✦ WEB3 ✦ DESIGN", "SCROLL DOWN"]}
-          className="custom-scroll-text text-2xla font-medium"
-        />
-        {/* === SECTION 2 === */}
+
+        {/* === SECTION 1 (HOME) === */}
         <section
-          id="about"
-          className="h-screen flex items-center justify-center px-8 relative overflow-hidden"
+          id="home"
+          className="h-screen px-8 relative z-10 overflow-hidden"
         >
-          <div className="absolute bg-black items-center justify-center inset-0 -z-10">
+          {/* Background Hyperspeed */}
+          <div className="absolute inset-0 z-0 bg-black flex items-center justify-center overflow-hidden">
             <Hyperspeed
               effectOptions={{
                 onSpeedUp: () => {},
@@ -167,6 +121,7 @@ export default function Home() {
                 carWidthPercentage: [0.3, 0.5],
                 carShiftX: [-0.8, 0.8],
                 carFloorSeparation: [0, 5],
+                isHyper: true,
                 colors: {
                   roadColor: 0x080808,
                   islandColor: 0x0a0a0a,
@@ -179,16 +134,249 @@ export default function Home() {
                 },
               }}
             />
+            <GradualBlur
+              target="parent"
+              position="bottom"
+              height="6rem"
+              strength={2}
+              divCount={5}
+              curve="bezier"
+              exponential={true}
+              opacity={1}
+            />
           </div>
+
+          {/* Foreground content */}
+          <div className="px-8 pt-8 relative z-10">
+            {/* HEADER / NAV */}
+            <header className="flex justify-between items-center w-full mb-16 relative z-[1000]">
+              <a
+                href="/"
+                className="cursor-target hover:text-white text-lg font-medium text-[#E9963A]"
+              >
+                ©HooQii
+              </a>
+
+              {/* Hamburger Button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden text-white focus:outline-none z-[1200]"
+                aria-label="Toggle Menu"
+              >
+                {isMenuOpen ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
+
+              {/* Mobile Menu */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <>
+                    <motion.div
+                      key="overlay"
+                      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[1300]"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      onClick={() => setIsMenuOpen(false)}
+                    />
+                    <motion.nav
+                      key="nav"
+                      initial={{ opacity: 0, x: "100%" }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: "100%" }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 140,
+                        damping: 18,
+                      }}
+                      className="fixed top-16 right-0 h-full w-3/4 sm:w-1/2 flex flex-col gap-6 text-lg font-medium text-white bg-white/5 backdrop-blur-xl p-8 shadow-2xl border-l border-white/10 z-[1400]"
+                    >
+                      <a
+                        href="#home"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="cursor-target hover:text-[#E9963A] transition-colors"
+                      >
+                        HOME
+                      </a>
+                      <a
+                        href="#about"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="cursor-target hover:text-[#E9963A] transition-colors"
+                      >
+                        ABOUT ME
+                      </a>
+                      <a
+                        href="#work"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="cursor-target hover:text-[#E9963A] transition-colors"
+                      >
+                        WORK
+                      </a>
+                      <a
+                        href="#contact"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="cursor-target hover:text-[#E9963A] transition-colors"
+                      >
+                        <DecryptedText
+                          text="CONTACT"
+                          animateOn="hover"
+                          revealDirection="center"
+                        />
+                      </a>
+                    </motion.nav>
+                  </>
+                )}
+              </AnimatePresence>
+
+              {/* Desktop Nav */}
+              <nav className="hidden md:flex gap-8 text-sm sm:text-lg font-medium text-white">
+                <a
+                  href="#home"
+                  className="cursor-target hover:text-[#E9963A] transition-colors"
+                >
+                  Home
+                </a>
+                <a
+                  href="#about"
+                  className="cursor-target hover:text-[#E9963A] transition-colors"
+                >
+                  About Me
+                </a>
+                <a
+                  href="#work"
+                  className="cursor-target hover:text-[#E9963A] transition-colors"
+                >
+                  Work
+                </a>
+                <a
+                  href="#contact"
+                  className="cursor-target hover:text-[#E9963A] transition-colors"
+                >
+                  Contact
+                </a>
+              </nav>
+            </header>
+
+            {/* HERO CONTENT */}
+            <div className="flex flex-col-reverse md:flex-row items-center justify-between mt-12 md:mt-24 gap-8 md:gap-16">
+              <div className="text-center sm:text-center md:text-left max-w-xl">
+                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-medium mb-4 text-[#E9963A]">
+                  Hello, my name is{" "}
+                  <span className="cursor-target">
+                    <DecryptedText
+                      className="cursor-target font-extrabold text-white"
+                      text="Defri Salwan"
+                      speed={75}
+                      maxIterations={40}
+                      animateOn="hover"
+                      revealDirection="center"
+                      parentClassName="cursor-pointer"
+                    />
+                  </span>
+                  <br />
+                  <span className="text-xl sm:text-3xl lg:text-4xl">
+                    a.k.a{" "}
+                    <DecryptedText
+                      className="cursor-target text-white hover:text-[#E9963A] font-semibold"
+                      text="HooQii"
+                      speed={75}
+                      maxIterations={80}
+                      animateOn="view"
+                    />
+                  </span>
+                </h1>
+                <p className="text-base sm:text-lg text-white mt-4 leading-relaxed lg:text-2xl">
+                  Deeply interested in{" "}
+                  <span className="font-semibold">
+                    Web3, Blockchain, Tech, & UI Design
+                  </span>
+                  . Passionate about new challenges and full-stack learning.
+                </p>
+              </div>
+
+              {/* PROFILE IMAGE */}
+              <div className="bg-black/60 relative w-48 h-48 sm:w-64 sm:h-64 lg:w-[30rem] lg:h-[30rem] rounded-full overflow-hidden border-4 border-[#E9963A] flex-shrink-0">
+                <Image
+                  src="/foto-profile.png"
+                  alt="Profile Picture"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+          <ShinyText
+            text="[Scroll To Explore]"
+            disabled={false}
+            speed={3}
+            className="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-base sm:text-lg text-gray-100"
+          />
+        </section>
+
+        {/* Scroll Text */}
+        <ScrollVelocity
+          texts={[" ✦ TECH ✦ WEB3 ✦ DESIGN", "SCROLL DOWN"]}
+          className="custom-scroll-text text-2xla font-medium text-white"
+          parallaxClassName="bg-black"
+        />
+
+        {/* === SECTION 2 === */}
+        <section
+          id="about"
+          className="h-screen flex items-center justify-center px-8 bg-black"
+        >
           <div className="text-center max-w-2xl">
             <h2 className="text-4xl text-white font-bold mb-4">About Me</h2>
             <p className="text-lg text-white leading-relaxed">
-              I'am a junior developer, has a keen eye for design, and capable of
+              I'm a junior developer with a keen eye for design, capable of
               producing engaging user experiences. Mobile Developer | UI/UX
               Designer
             </p>
           </div>
         </section>
+
+        {/* === SECTION 3 === */}
+        <section
+          id="work"
+          className="h-screen flex items-center justify-center px-8 bg-white"
+        >
+          <div className="text-center max-w-2xl">
+            <h2 className="text-4xl text-black font-bold mb-4">My Work</h2>
+          </div>
+        </section>
+
+        {/* Curved Text Footer */}
         <div className="bottom-0">
           <CurvedLoop
             marqueeText="Tech ✦ Web3 ✦ Design ✦"
@@ -199,8 +387,9 @@ export default function Home() {
             className="custom-text-style text-black"
           />
         </div>
-        {/* Circular Text - fixed position */}
-        <main className="fixed bottom-8 left-6 z-50">
+
+        {/* Floating Circular Text */}
+        <main className="fixed bottom-8 right-6 z-50">
           <CircularText
             text="DESIGNER✦SOFTWARE✦DEVELOPER✦"
             onHover="speedUp"
