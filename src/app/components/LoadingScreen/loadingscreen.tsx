@@ -28,7 +28,7 @@ const LoadingScreen: FC<LoadingScreenProps> = ({ onComplete, isLoading }) => {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-black transition-opacity duration-1000 ${
+      className={`fixed inset-0 h-screen w-screen flex items-center justify-center bg-black z-[9999] transition-opacity duration-1000 ${
         isLoading ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
