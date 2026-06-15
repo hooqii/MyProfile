@@ -18,7 +18,7 @@ interface CircularTextProps {
 const getRotationTransition = (
   duration: number,
   from: number,
-  loop: boolean = true
+  loop: boolean = true,
 ) => ({
   from,
   to: from + 360,
@@ -103,7 +103,8 @@ const CircularText: React.FC<CircularTextProps> = ({
 
   return (
     <motion.div
-      className={`m-0 mx-auto rounded-full w-[120px] h-[120px] sm:w-[160px] sm:h-[160px] relative font-black text-white text-center cursor-pointer origin-center ${className}`}
+      // 👇 Tambahkan mix-blend-difference di sini
+      className={`m-0 mx-auto rounded-full w-[120px] h-[120px] sm:w-[160px] sm:h-[160px] relative font-black text-white text-center cursor-pointer origin-center mix-blend-difference ${className}`}
       style={{ rotate: rotation }}
       initial={{ rotate: 0 }}
       animate={controls}
